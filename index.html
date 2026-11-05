@@ -93,7 +93,7 @@
   body.teacher #print { display: inline-block; }
   @media print {
     body { background: #fff; color: #000; }
-    form, #msg, #status, #print, .bar, .sub, .left small { display: none !important; }
+    form, #msg, #status, #print, #title, .bar, .sub, .left small { display: none !important; }
     .options { display: block; }
     .opt { border: 0; padding: 0; background: #fff !important; page-break-after: always; break-after: page; }
     .opt:last-child { page-break-after: auto; break-after: auto; }
@@ -125,7 +125,7 @@
 <script type="module">
 /* =====================  1. HIER ANPASSEN  ===================== */
 
-const TITLE = "Anmeldung";
+const TITLE = "IDAF Projekte 2026";
 const SUBTITLE = "Wähle ein Projekt, gib deinen Vor- und Nachnamen ein und tippe auf Eintragen.";
 
 // Plätze pro Option. Muss mit den Regeln in Firebase übereinstimmen (siehe Anleitung).
