@@ -88,6 +88,21 @@
   button.go:disabled { opacity: .5; cursor: not-allowed; }
   #msg { min-height: 1.5em; margin: 10px 0 0; color: var(--muted); }
   #msg.err { color: var(--full); }
+  #print { display: none; margin-top: 14px; font: inherit; padding: 10px 18px; border-radius: 8px;
+    border: 2px solid var(--accent); background: transparent; color: var(--accent); font-weight: 600; cursor: pointer; }
+  body.teacher #print { display: inline-block; }
+  @media print {
+    body { background: #fff; color: #000; }
+    form, #msg, #status, #print, .bar, .sub, .left small { display: none !important; }
+    .options { display: block; }
+    .opt { border: 0; padding: 0; background: #fff !important; page-break-after: always; break-after: page; }
+    .opt:last-child { page-break-after: auto; break-after: auto; }
+    .opt h2 { font-size: 20pt; margin: 0 0 4pt; }
+    .left { font-size: 12pt; margin: 0 0 10pt; color: #000 !important; }
+    .names { counter-reset: n; }
+    .names li { counter-increment: n; font-size: 13pt; padding: 5pt 0; border-top: 0; border-bottom: .5pt solid #999; font-weight: 400 !important; }
+    .names li::before { content: counter(n) ".  "; display: inline-block; width: 28pt; color: #555; }
+  }
   #status { color: var(--muted); font-size: .9rem; margin-top: 18px; }
 </style>
 </head>
@@ -104,18 +119,19 @@
   </form>
   <p id="msg" role="status" aria-live="polite"></p>
   <p id="status"></p>
+  <button type="button" id="print">Liste drucken</button>
 </main>
 
 <script type="module">
 /* =====================  1. HIER ANPASSEN  ===================== */
 
 const TITLE = "Anmeldung";
-const SUBTITLE = "Wähle ein Projekt aus, gib deinen Vor- und Nachnamen ein und tippe auf Eintragen.";
+const SUBTITLE = "Wähle ein Projekt, gib deinen Vor- und Nachnamen ein und tippe auf Eintragen.";
 
 // Plätze pro Option. Muss mit den Regeln in Firebase übereinstimmen (siehe Anleitung).
 const OPTIONS = [
   { id: "a", label: "Energiewende", cap: 40 },
-  { id: "b", label: "Moda sostsenibile", cap: 40 },
+  { id: "b", label: "Moda sostensibile", cap: 40 },
   { id: "c", label: "Sustainable Energy", cap: 40 },
 ];
 
@@ -206,6 +222,9 @@ if (db) {
     () => { clearTimeout(t); $("status").textContent = "Lesen nicht möglich. Regeln in Firebase prüfen."; });
 }
 render();
+
+if (location.hash === "#lehrer") document.body.classList.add("teacher");
+$("print").addEventListener("click", () => window.print());
 
 $("form").addEventListener("submit", async (ev) => {
   ev.preventDefault();
